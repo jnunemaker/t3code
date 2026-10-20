@@ -61,7 +61,7 @@ import { readEnvironmentScope, useEnvironmentScope } from "~/state/session";
 import { useRightPanelStore } from "~/rightPanelStore";
 
 import { previewBridge } from "./previewBridge";
-import { subscribePreviewAction } from "./previewActionBus";
+import { subscribePreviewAction, takePendingPreviewUrlFocus } from "./previewActionBus";
 import { closePreviewSession } from "./closePreviewSession";
 import { openPreviewSession } from "./openPreviewSession";
 import { showPreviewPopup } from "./showPreviewPopup";
@@ -888,6 +888,7 @@ export function PreviewView({
           handleRefresh();
           return;
         case "focus-url":
+          takePendingPreviewUrlFocus();
           setFocusUrlNonce((value) => (value ?? 0) + 1);
           return;
         case "zoom-in":
@@ -915,6 +916,7 @@ export function PreviewView({
       data-thread-key={scopedThreadKey(threadRef)}
     >
       <PreviewChromeRow
+        visible={visible}
         url={url}
         loading={loading || serverStreamPending}
         canGoBack={canGoBack && !serverInputDisabled}

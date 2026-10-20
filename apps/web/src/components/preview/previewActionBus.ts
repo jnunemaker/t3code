@@ -24,3 +24,17 @@ export function subscribePreviewAction(listener: (action: PreviewAction) => void
   window.addEventListener(EVENT_NAME, handler);
   return () => window.removeEventListener(EVENT_NAME, handler);
 }
+
+// A browser opened from a shortcut mounts after the request, so it reads this once visible.
+let urlFocusPending = false;
+
+export function requestPreviewUrlFocus(): void {
+  urlFocusPending = true;
+  dispatchPreviewAction("focus-url");
+}
+
+export function takePendingPreviewUrlFocus(): boolean {
+  const pending = urlFocusPending;
+  urlFocusPending = false;
+  return pending;
+}

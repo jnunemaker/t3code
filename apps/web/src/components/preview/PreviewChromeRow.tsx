@@ -20,6 +20,7 @@ import { Button } from "~/components/ui/button";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "~/components/ui/input-group";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "~/components/ui/tooltip";
 import { cn } from "~/lib/utils";
+import { takePendingPreviewUrlFocus } from "./previewActionBus";
 
 interface Props {
   url: string;
@@ -29,6 +30,7 @@ interface Props {
   refreshDisabled: boolean;
   inputDisabled?: boolean | undefined;
   focusUrlNonce?: number | undefined;
+  visible: boolean;
   onBack: () => void;
   onForward: () => void;
   onRefresh: () => void;
@@ -58,6 +60,7 @@ export function PreviewChromeRow({
   refreshDisabled,
   inputDisabled,
   focusUrlNonce,
+  visible,
   onBack,
   onForward,
   onRefresh,
@@ -86,6 +89,11 @@ export function PreviewChromeRow({
     if (!node) return;
     node.focus();
   }, [focusUrlNonce]);
+
+  useEffect(() => {
+    if (!visible || !takePendingPreviewUrlFocus()) return;
+    inputRef.current?.focus();
+  }, [visible]);
 
   const submit = (event?: FormEvent | KeyboardEvent) => {
     event?.preventDefault();

@@ -252,7 +252,7 @@ import { previewRuntimeTabId } from "../browser/previewRuntimeTabId";
 import { addBrowserSurface } from "./preview/addBrowserSurface";
 import { ThreadPreviewMiniPlayer } from "./preview/ThreadPreviewMiniPlayer";
 import { usePreviewSession } from "./preview/usePreviewSession";
-import { subscribePreviewAction } from "./preview/previewActionBus";
+import { requestPreviewUrlFocus, subscribePreviewAction } from "./preview/previewActionBus";
 import { getConfiguredPreviewUrls } from "./preview/previewEmptyStateLogic";
 
 import {
@@ -3757,6 +3757,7 @@ export default function ChatView(props: ChatViewProps) {
   );
   const createBrowserSurface = (profileId?: string) => {
     if (!activeThreadRef || !canOperatePreview) return;
+    requestPreviewUrlFocus();
     void addBrowserSurface({
       threadRef: activeThreadRef,
       openPreview,
@@ -3902,6 +3903,7 @@ export default function ChatView(props: ChatViewProps) {
     if (!canOperatePreview) return;
     const activeTabId = activePreviewState.activeTabId;
     if (activeTabId) {
+      requestPreviewUrlFocus();
       useRightPanelStore.getState().openBrowser(activeThreadRef, activeTabId);
     } else {
       createBrowserSurface();
