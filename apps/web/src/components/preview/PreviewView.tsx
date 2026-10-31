@@ -861,7 +861,6 @@ export function PreviewView({
   useEffect(() => {
     if (!visible) return;
     const unsubscribeAction = subscribePreviewAction((action) => onPreviewAction(action));
-    // A focused page is a separate process, so the desktop forwards its address-bar chord back.
     const unsubscribeMenu = window.desktopBridge?.onMenuAction((action) => {
       if (action === "preview.focusUrl") onPreviewAction("focus-url");
     });
